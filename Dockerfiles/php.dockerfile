@@ -1,16 +1,24 @@
+# Use the PHP FPM image
 FROM php:fpm-alpine3.20
 
 # Install dependencies
-RUN apk add --no-cache bash git zip unzip curl nodejs npm
+RUN apk add --no-cache bash curl libzip-dev zip unzip nodejs npm
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install PHP extensions required for Laravel
+RUN docker-php-ext-install pdo pdo_mysql zip
 
-# Set working directory
+# Install Composer (latest LTS version)
+RUN curl -sS https://getcomposer.org/installer | php -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer \
+    --2
+
+# Set the working directory
 WORKDIR /var/www/html
 
-# Install Laravel and Inertia
-RUN composer create-project --prefer-dist laravel/laravel . \
-    && composer require inertiajs/inertia-laravel \
-    && php artisan inertia:middleware \
-    && npm install && npm run build
+# Copy entrypoint script
+COPY Dockerfiles/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Default command
+CMD ["/entrypoint.sh"]
