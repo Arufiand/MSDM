@@ -1,0 +1,37 @@
+services:
+  php:
+    build:
+      context: Dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./app:/var/www/html
+    working_dir: /var/www/html
+    depends_on:
+      - mysql
+      - node
+    command: sh -c "composer create-project --prefer-dist laravel/laravel . && php artisan inertia:middleware && php-fpm"
+    env_file:
+      - .env
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfiles/node.dockerfile
+    volumes:
+      - ./app:/var/www/html
+    working_dir: /var/www/html
+    ports:
+      - "5173:5173"  # Vite (Frontend) port
+    command: sh -c "npm install && npm run dev -- --host"
+
+  mysql:
+    image: mysql:8.0
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+volumes:
+  db-data:
