@@ -13,13 +13,13 @@ if [ ! -f "artisan" ]; then
     composer install
     php artisan migrate --force
 fi
-
+php artisan migrate --force
 echo "Laravel project found, starting"
 
 # Start Laravel in the background
-php artisan serve --host=0.0.0.0 --port=8000
+php artisan serve --host=0.0.0.0 --port=1305 &
 
-#echo "Running npm run dev"
+echo "Running npm run dev"
 #
 ## Start Vite and keep the container running
-#npm run dev
+exec npm run dev -- --host 0.0.0.0 --port 5173
