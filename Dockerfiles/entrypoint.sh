@@ -12,8 +12,11 @@ if [ ! -f "artisan" ]; then
     php artisan inertia:middleware
     composer install
     php artisan migrate --force
+    npm install @inertiajs/react @inertiajs/inertia @inertiajs/inertia-react
+    npm install -D tailwindcss postcss autoprefixer
+    npx tailwindcss init -p
 fi
-php artisan migrate --force
+#php artisan migrate --force
 echo "Laravel project found, starting"
 
 # Start Laravel in the background
