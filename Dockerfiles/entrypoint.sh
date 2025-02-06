@@ -12,13 +12,13 @@ if [ ! -f "artisan" ]; then
     php artisan inertia:middleware
     composer install
     php artisan migrate --force
-    npm install @inertiajs/react @inertiajs/inertia @inertiajs/inertia-react
+    npm install @inertiajs/react @inertiajs/inertia @inertiajs/progress react react-dom @vitejs/plugin-react
     npm install -D tailwindcss postcss autoprefixer
     npx tailwindcss init -p
 fi
 #php artisan migrate --force
 echo "Laravel project found, starting"
-npm install @inertiajs/progress react react-dom
+npm install
 
 # Start Laravel in the background
 php artisan serve --host=0.0.0.0 --port=1305 &
