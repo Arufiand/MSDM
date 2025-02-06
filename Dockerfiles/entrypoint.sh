@@ -18,6 +18,7 @@ if [ ! -f "artisan" ]; then
 fi
 #php artisan migrate --force
 echo "Laravel project found, starting"
+npm install @inertiajs/progress react react-dom
 
 # Start Laravel in the background
 php artisan serve --host=0.0.0.0 --port=1305 &
